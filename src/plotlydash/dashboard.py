@@ -16,19 +16,31 @@ dash_app = Dash(__name__,
                 # routes_pathname_prefix='/dash_app/',
                 url_base_pathname='/dash_app/')
 
+data_input = dbc.FormGroup(
+    [
+        dbc.Label("Select data", html_for="dropdown"),
+        dcc.Dropdown(
+            id="data-dropdown",
+            options=[
+                {'label': 'COVID-19 Dataset', 'value': 'covid'},
+                {'label': 'Upload your own', 'value': 'upload'}
+            ],
+            value='covid',
+            style={'color': 'rgb(230, 230, 230)'}
+        )
+    ]
+)
+
+# TODO: preview data option, data preview in modal?
+# TODO: multi select drop down on which columns to include in plotly? one for each feature of plotly? x, y, color, etc.?
+# TODO: option for prophet prediction, prophet graph
+# TODO: option to generate predictions to csv
+# TODO: option to do other ML and select which parts of data to use, warnings based on data type
+
 dash_form = dbc.Col([
     html.H2('Plotly Dashboard'),
     html.H4('Data'),
-    html.Div(
-        dcc.Dropdown(
-            id='Data',
-            options=[(
-                {'label': 'COVID-19 Dataset', 'value': 'covid'},
-                {'label': 'Upload your Own', 'value': 'upload'}
-            )],
-            value='covid'
-        )
-    ),
+    data_input,
     dcc.Upload(
         id='datatable-upload',
         children=html.Div([

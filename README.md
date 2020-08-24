@@ -1,6 +1,8 @@
 # ML COVID App
 #### *Hadley Rose Mitchell 08/24/2020*
 
+![Current Screenshot of App](src/static/2020-08-24_1-41-34_App_Screenshot_HRM.png)
+
 Dash-embedded Flask app for visualizing COVID-19 data and applying basic ML techniques.
 
 **TODOs**:

@@ -46,7 +46,7 @@ dash_app.layout = html.Div([
                                'fontWeight': 'bold'
                            },
                            style_cell={
-                               'fontColor': 'black'
+                               'color': 'black'
                            }
                            )),
          dbc.Col(dcc.Graph(id='datatable-upload-graph'))]

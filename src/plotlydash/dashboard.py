@@ -16,25 +16,37 @@ dash_app = Dash(__name__,
                 # routes_pathname_prefix='/dash_app/',
                 url_base_pathname='/dash_app/')
 
-dash_app.layout = html.Div([
-    dbc.Row(
-        dbc.Col(
-            dcc.Upload(
-                id='datatable-upload',
-                children=html.Div([
-                    'Drag and Drop or ',
-                    html.A('Select Files')
-                ]),
-                style={
-                    'width': '100%', 'height': '60px', 'lineHeight': '60px',
-                    'borderWidth': '1px', 'borderStyle': 'dashed',
-                    'borderRadius': '5px', 'textAlign': 'center', 'margin': '10px'
-                },
-            )
+dash_form = dbc.Col([
+    html.H2('Plotly Dashboard'),
+    html.H4('Data'),
+    html.Div(
+        dcc.Dropdown(
+            id='Data',
+            options=[(
+                {'label': 'COVID-19 Dataset', 'value': 'covid'},
+                {'label': 'Upload your Own', 'value': 'upload'}
+            )],
+            value='covid'
         )
     ),
+    dcc.Upload(
+        id='datatable-upload',
+        children=html.Div([
+            'Drag and Drop or ',
+            html.A('Select Files')
+        ]),
+        style={
+            'width': '100%', 'height': '60px', 'lineHeight': '60px',
+            'borderWidth': '1px', 'borderStyle': 'dashed',
+            'borderRadius': '5px', 'textAlign': 'center', 'margin': '10px'
+        },
+    )
+])
+
+dash_app.layout = html.Div([
     dbc.Row(
-        [dbc.Col(DataTable(id='datatable-upload-container', page_size=5,
+        [dash_form,
+         dbc.Col(DataTable(id='datatable-upload-container', page_size=5,
                            style_data_conditional=[
                                {
                                    'if': {'row_index': 'odd'},

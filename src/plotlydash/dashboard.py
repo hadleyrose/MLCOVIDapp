@@ -50,11 +50,27 @@ plotly_input = dbc.FormGroup(
             value='date',
             style={'color': 'black'}
         ),
+        dbc.Label('x-axis scale'),
+        dcc.Dropdown(
+            id='x_scale',
+            options=[dict(label=val, value=val) for val in
+                     ['detect', 'linear', 'log', 'date', 'category', 'multicategory']],
+            value='detect',
+            style={'color': 'black'}
+        ),
         dbc.Label('y-axis'),
         dcc.Dropdown(
             id='y_data',
             options=[dict(label=val, value=val) for val in covid_df.columns],
             value='total_cases',
+            style={'color': 'black'}
+        ),
+        dbc.Label('y-axis scale'),
+        dcc.Dropdown(
+            id='y_scale',
+            options=[dict(label=val, value=val) for val in
+                     ['detect', 'linear', 'log', 'date', 'category', 'multicategory']],
+            value='detect',
             style={'color': 'black'}
         ),
         dbc.Label('line color'),
@@ -97,10 +113,14 @@ dash_app.layout = html.Div([
                    [Input('data_dropdown', 'value'),
                     Input('type_dropdown', 'value'),
                     Input('x_data', 'value'),
+                    Input('x_scale', 'value'),
                     Input('y_data', 'value'),
+                    Input('y_scale', 'value'),
                     Input('z_data', 'value')])
 def display_graph(data_dropdown, type_dropdown,
-                  x_data, y_data, z_data):
+                  x_data, x_scale,
+                  y_data, y_scale,
+                  z_data):
     fig = None
     if data_dropdown != 'covid':  # TODO: update to be user-uploaded data graph
         fig = px.line([{'x': 1, 'y': 2, 'z': 3}])
@@ -109,5 +129,13 @@ def display_graph(data_dropdown, type_dropdown,
             fig = px.line(covid_df, x=x_data, y=y_data, color=z_data)
         elif type_dropdown == 'scatter':
             fig = px.scatter(covid_df, x=x_data, y=y_data, color=z_data)
+
+    if x_scale != 'detect':
+        fig.update_xaxes(title=f'{x_data} \n ({x_scale})',
+                         type=x_scale.lower())
+
+    if y_scale != 'detect':
+        fig.update_yaxes(title=f'{y_data} \n ({y_scale})',
+                         type=y_scale.lower())
 
     return fig
